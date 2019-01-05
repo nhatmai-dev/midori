@@ -1,6 +1,42 @@
-<ul class="collection grey darken-3">
-  <li class="collection-item grey darken-3">Settings</li>
-  <li class="collection-item grey darken-3">Account configurations</li>
-  <li class="collection-item grey darken-3">Transaction lookup</li>
-  <li class="collection-item grey darken-3">About</li>
+<!-- <div class="collection grey">
+  <a class="collection-item"><i class="small material-icons">settings</i> Settings</a>
+  <a class="collection-item"><i class="small material-icons">account_box</i> Account configuration</a>
+  <a class="collection-item"><i class="small material-icons">search</i> Transactions</a>
+  <a class="collection-item"><i class="small material-icons">info</i> About</a>
+</div> -->
+
+<!-- <ul class="collapsible">
+  <li>
+    <div class="collapsible-header">
+      <i class="small material-icons">settings</i>
+      Settings
+    </div>
+  </li>
+  <li>
+    <div class="collapsible-header">
+      <i class="small material-icons">account_box</i>
+      Account configuration
+    </div>
+  </li>
+  <li>
+    <div class="collapsible-header">
+      <i class="small material-icons">search</i>
+      Transactions
+    </div>
+  </li>
+  <li>
+    <div class="collapsible-header">
+      <i class="small material-icons">info</i>
+      About
+    </div>
+  </li>
+</ul> -->
+
+<ul class="collapsible">
+  <li *ngFor="let item of items" (click)="selectItem(item)">
+    <div class="collapsible-header">
+      <i class="small material-icons">{{item.icon}}</i>
+      {{item.name}}
+    </div>
+  </li>
 </ul>

@@ -1,10 +1,16 @@
-<div class="app-container grey darken-3">
+<div class="app-container">
   <div class="app-container__content row">
-    <div class="left-panel col m3 l4">
-        <app-sidebar></app-sidebar>
-    </div>
-    <div class="right-panel col m9 l8">
+    <!-- <div class="left-panel col l3 deep-orange accent-4">WTF left</div> -->
+    <!-- <div class="left-panel col l9 green accent-4">WTF right</div> -->
 
+    <div class="left-panel col l3">
+      <app-sidebar [contentLoader]="contentLoader"></app-sidebar>
     </div>
+    <div class="right-panel col l9">
+        <app-content-loader #contentLoader></app-content-loader>
+    </div>
+
+    <!-- <div class="left-panel col l3 deep-orange accent-4">WTF left</div> -->
+    <!-- <div class="left-panel col l9 green accent-4">WTF right</div> -->
   </div>
 </div>
