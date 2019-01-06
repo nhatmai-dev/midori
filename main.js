@@ -13,8 +13,8 @@ function createWindow () {
   win = new BrowserWindow({ 
     width: 1366, 
     height: 768,
-    minWidth: 1366,
-    minHeight: 768
+    minWidth: 800,
+    minHeight: 600
   })
 
   win.setMenuBarVisibility(false);

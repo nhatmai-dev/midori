@@ -1,11 +1,30 @@
 <div class="row">
-    <div class="col s12 m6">
-      <div class="card yellow lighten-2">
-        <div class="card-content">
-          <span class="card-title"><b>Settings</b> component</span>
-          <p>Input data: {{data}}</p>
-        </div>
-      </div>
-    </div>
+  <h6><i class="material-icons prefix">account_circle</i> Account</h6>
+  <!-- <div class="input-field inline col s6">
+    <input id="accountId" type="text" class="validate" [(ngModel)]="selectedAccountId">
+    <span class="helper-text" data-error="Invalid"></span>
+  </div> -->
+  <div class="input-field inline col s6">
+    <!-- <i class="material-icons prefix">account_circle</i> -->
+    <input name="accountIdTxt" id="icon_prefix" type="number" class="validate" [(ngModel)]="selectedAccountId" required>
   </div>
-  
+</div>
+
+<div class="row">
+  <h6><i class="material-icons prefix">dns</i> Environment</h6>
+  <p *ngFor="let environment of environments">
+    <label>
+      <input name="envgroup" type="radio" (click)="setEnvironment(environment)" [checked]="environment == selectedEnvironment" />
+      <span>{{environment}}</span>
+    </label>
+  </p>
+</div>
+<!-- <div class="row">
+  <ul class="collection">
+    <li class="collection-item">Selected account: {{selectedAccountId}}</li>
+    <li class="collection-item">Selected environment: {{selectedEnvironment}}</li>
+  </ul>
+</div> -->
+<div class="row">
+  <a class="btn" (click)="saveSettings()">Apply</a>
+</div>
