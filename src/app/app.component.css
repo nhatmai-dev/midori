@@ -1,9 +1,42 @@
 .app-container {
-    display: block;
-    overflow-x: hidden;
-    position: absolute;
-    top: 0;
-    left: 0;
-    height: 100%;
-    width: 100%;
+  /* display: block;
+  overflow-x: hidden;
+  position: absolute;
+  top: 0;
+  left: 0;
+  height: 100%;
+  width: 100%; */
+
+}
+
+.app-container__content {
+  height: 100% !important;
+}
+
+.app-container__content.row {
+  margin-bottom: unset;
+}
+
+.left-panel {
+  display: block;
+  overflow-x: hidden;
+  position: relative;
+  top: 0;
+  left: 0;
+  /* height: -webkit-fill-available !important; */
+  width: 100%;
+  border-right: solid 1px #ddd;
+}
+
+.left-panel.col {
+  padding: unset;
+}
+
+.right-panel {
+  padding-left: 2em;
+}
+
+div {
+  /* height: 100% !important; */
+  height: -webkit-fill-available !important;
 }

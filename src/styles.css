@@ -1,5 +1,9 @@
 /* You can add global styles to this file, and also import other style files */
 
+body {
+  height: 100% !important;
+}
+
 #toast-container {
   margin: 0 !important;
   position: absolute !important;
