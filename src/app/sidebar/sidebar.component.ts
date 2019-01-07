@@ -14,7 +14,9 @@ export class SidebarComponent {
   selectedItem: ContentItem;
 
   // constructor(private contentLoaderComponent: ContentLoaderComponent) { }
-  constructor() { }
+  constructor() {
+    this.selectedItem = this.items[0];
+  }
 
   selectItem(item: ContentItem) {
     this.selectedItem = item;

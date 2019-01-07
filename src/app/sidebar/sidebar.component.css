@@ -1,3 +1,18 @@
-.collapsible {
-  box-shadow: unset !important;
+.collection {
+  margin: unset;
+  border: none;
+}
+
+.collection-item.last {
+  border-bottom: none;
+}
+
+a > i {
+  color: black;
+  vertical-align: middle;
+}
+
+a > .text {
+  color: black;
+  vertical-align: middle;
 }

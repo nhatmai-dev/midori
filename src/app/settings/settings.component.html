@@ -1,17 +1,16 @@
 <div class="row">
-  <h6><i class="material-icons prefix">account_circle</i> Account</h6>
-  <!-- <div class="input-field inline col s6">
-    <input id="accountId" type="text" class="validate" [(ngModel)]="selectedAccountId">
-    <span class="helper-text" data-error="Invalid"></span>
-  </div> -->
-  <div class="input-field inline col s6">
-    <!-- <i class="material-icons prefix">account_circle</i> -->
-    <input name="accountIdTxt" id="icon_prefix" type="number" class="validate" [(ngModel)]="selectedAccountId" required>
+  <div>
+    <i class="material-icons prefix">account_circle</i>&nbsp;<span class="text">Account</span>
+  </div>
+  <div class="input-field col m6 l6">
+    <input name="accountIdTxt" id="icon_prefix" type="number" class="validate" [(ngModel)]="selectedAccountId" required ng-maxlength="8">
   </div>
 </div>
 
 <div class="row">
-  <h6><i class="material-icons prefix">dns</i> Environment</h6>
+  <div>
+    <i class="material-icons prefix">dns</i>&nbsp;<span class="text">Environment</span>
+  </div>
   <p *ngFor="let environment of environments">
     <label>
       <input name="envgroup" type="radio" (click)="setEnvironment(environment)" [checked]="environment == selectedEnvironment" />

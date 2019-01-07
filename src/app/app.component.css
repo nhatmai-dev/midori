@@ -40,3 +40,7 @@ div {
   /* height: 100% !important; */
   height: -webkit-fill-available !important;
 }
+
+.right-panel {
+  padding-top: 1em;
+}
