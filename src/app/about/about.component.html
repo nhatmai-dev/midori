@@ -1,10 +1,37 @@
-<div class="row">
-  <div class="col s12 m6">
-    <div class="card pink lighten-2">
-      <div class="card-content">
-        <span class="card-title"><b>About</b> component</span>
-        <p>Input data: {{data}}</p>
-      </div>
-    </div>
-  </div>
-</div>
+<ul class="collection with-header">
+  <li class="collection-header">
+    Midori
+  </li>
+  <li class="collection-item">Version XX.YY.ZZ</li>
+  <li class="collection-item">Developed by Bamboo</li>
+</ul>
+
+<ul class="collection with-header">
+  <li class="collection-header">Built with</li>
+  <li class="collection-item avatar">
+    <img src="https://angular.io/assets/images/logos/angular/angular.svg" alt="" class="circle">
+    <span class="title">Angular</span>
+    <p>{{angularVersion}}</p>
+  </li>
+  <li class="collection-item avatar">
+    <img src="https://avatars3.githubusercontent.com/u/13409222?s=200&v=4" alt="" class="circle">
+    <span class="title">Electron</span>
+    <p>{{electronVersion}}</p>
+  </li>
+  <li class="collection-item avatar">
+    <img src="https://cdn.worldvectorlogo.com/logos/nodejs-2.svg" alt="" class="circle">
+    <span class="title">Node.js</span>
+    <p>{{nodeVersion}}</p>
+  </li>
+  <li class="collection-item avatar">
+    <img src="https://upload.wikimedia.org/wikipedia/commons/a/a5/Google_Chrome_icon_%28September_2014%29.svg" alt=""
+      class="circle">
+    <span class="title">Chrome</span>
+    <p>{{chromeVersion}}</p>
+  </li>
+  <li class="collection-item avatar">
+    <img src="https://v8.dev/_img/v8.svg" alt="" class="circle">
+    <span class="title">V8</span>
+    <p>{{v8Version}}</p>
+  </li>
+</ul>

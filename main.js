@@ -1,6 +1,4 @@
-const electron = require('electron')
-
-const { app, BrowserWindow } = require('electron')
+const { app, BrowserWindow, ipcMain } = require('electron')
 const path = require('path')   
 const url = require('url')  
 
@@ -60,6 +58,22 @@ app.on('activate', () => {
   if (win === null) {
     createWindow()
   }
+})
+
+ipcMain.on('get-node-version', (event) => {
+  event.sender.send('get-node-version-resp', process.versions['node'])
+})
+
+ipcMain.on('get-electron-version', (event) => {
+  event.sender.send('get-electron-version-resp', process.versions['electron'])
+})
+
+ipcMain.on('get-chrome-version', (event) => {
+  event.sender.send('get-chrome-version-resp', process.versions['chrome'])
+})
+
+ipcMain.on('get-v8-version', (event) => {
+  event.sender.send('get-v8-version-resp', process.versions['v8'])
 })
 
 // In this file you can include the rest of your app's specific main process
