@@ -14,9 +14,9 @@ const configDirPath = `${appLocation}${path.sep}config`
 let win
 let splash
 
-function createWindow () {
-  const dirpath = __dirname;
-  const dirname = dirpath.substring(dirpath.lastIndexOf("/")+1,dirpath.length);
+function createWindow() {
+  const dirpath = __dirname
+  const dirname = dirpath.substring(dirpath.lastIndexOf(path.sep) + 1, dirpath.length)
 
   splash = new BrowserWindow({ 
     width: 1366, 
