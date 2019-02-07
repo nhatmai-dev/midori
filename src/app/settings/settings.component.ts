@@ -1,10 +1,13 @@
-import { Component, OnInit, Input, AfterContentInit, AfterViewInit } from '@angular/core';
+import { Component, OnInit, Input, AfterContentInit, AfterViewInit, NgZone } from '@angular/core';
 import { ContentComponent } from '../content-interface';
 
 import * as M from 'materialize-css/dist/js/materialize.min.js';
 import { Environment } from '../environment-enum';
 import { StateManagementService } from '../state-management.service';
 import { isNullOrUndefined } from 'util';
+import { ConnectionInfo } from './connection-info';
+import { ElectronService } from 'ngx-electron';
+import { ConnectionSet } from './connection-set';
 
 @Component({
   selector: 'app-settings',
@@ -15,28 +18,33 @@ export class SettingsComponent implements ContentComponent, OnInit, AfterViewIni
   @Input() data: any;
   selectedAccountId: number;
   selectedEnvironment: string;
+  erpUser: string;
+  erpPassword: string;
+  erpConnectionString: string;
+  tdUser: string;
+  tdPassword: string;
+  tdConnectionString: string;
   environments: string[];
-  options = {
-    coverTrigger: false
-  };
+  isSettingsSaving: boolean;
 
-  constructor(private stateManagementService: StateManagementService) {
+  constructor(private stateManagementService: StateManagementService, private _electronService: ElectronService, private _ngZone: NgZone) {
   }
 
   ngOnInit(): void {
+    this.isSettingsSaving = false;
+    this.environments = this.getEnvironmentArray();
+    this.stateManagementService.getIsSettingsSaving().subscribe(
+      result => this.isSettingsSaving = result
+    );
     this.stateManagementService.getAccountId().subscribe(
       savedAccountId => {
-        console.log('savedAccountId: ' + savedAccountId);
         if (!isNullOrUndefined(savedAccountId)) {
           this.selectedAccountId = savedAccountId;
         }
       }
     );
-
-    this.environments = this.getEnvironmentArray();
     this.stateManagementService.getEnvironment().subscribe(
       savedEnvironment => {
-        console.log('savedEnvironment: ' + savedEnvironment);
         if (!isNullOrUndefined(savedEnvironment)) {
           this.selectedEnvironment = savedEnvironment;
         } else {
@@ -44,12 +52,63 @@ export class SettingsComponent implements ContentComponent, OnInit, AfterViewIni
         }
       }
     );
+    this._electronService.ipcRenderer.on('write-settings-file-resp', (event, arg) => {
+      this._ngZone.run(() => {
+        M.Toast.dismissAll();
+        if (arg === 'OK') {
+          this.stateManagementService.setIsSettingsSaved(true);
+          M.toast({
+            html: 'OK!',
+            displayLength: 1000,
+            outDuration: 0,
+            classes: 'green rounded',
+            completeCallback: () => {
+              this.isSettingsSaving = false;
+            }
+          });
+        } else {
+          this.stateManagementService.setIsSettingsSaved(false);
+          M.toast(
+            {
+              html: 'FAILED!',
+              displayLength: 1000,
+              outDuration: 0,
+              classes: 'red rounded',
+              completeCallback: () => {
+                this.isSettingsSaving = false;
+              }
+            });
+        }
+      });
+    });
+    this._electronService.ipcRenderer.on('read-settings-file-resp', (event, arg) => {
+      this._ngZone.run(() => {
+        const connectionSet: ConnectionSet = JSON.parse(arg);
+        if (connectionSet.erpConnectionInfo) {
+          this.erpConnectionString = connectionSet.erpConnectionInfo.connectionString;
+          this.erpUser = connectionSet.erpConnectionInfo.user;
+          this.erpPassword = connectionSet.erpConnectionInfo.password;
+        } else {
+          this.erpConnectionString = null;
+          this.erpUser = null;
+          this.erpPassword = null;
+        }
+        if (connectionSet.tdConnectionInfo) {
+          this.tdConnectionString = connectionSet.tdConnectionInfo.connectionString;
+          this.tdUser = connectionSet.tdConnectionInfo.user;
+          this.tdPassword = connectionSet.tdConnectionInfo.password;
+        } else {
+          this.tdConnectionString = null;
+          this.tdUser = null;
+          this.tdPassword = null;
+        }
+      });
+    });
+    this.loadConnectionForSelectedEnvironment(this.selectedEnvironment);
   }
 
   ngAfterViewInit(): void {
-    const elems = document.querySelectorAll('.dropdown-trigger');
-    const instances = M.Dropdown.init(elems, this.options);
-    M.updateTextFields();
+
   }
 
   getCodeName(): string {
@@ -62,6 +121,11 @@ export class SettingsComponent implements ContentComponent, OnInit, AfterViewIni
 
   setEnvironment(environment: string) {
     this.selectedEnvironment = environment;
+    this.loadConnectionForSelectedEnvironment(environment);
+  }
+
+  loadConnectionForSelectedEnvironment(environment: string) {
+    this._electronService.ipcRenderer.send('read-settings-file', this.selectedEnvironment);
   }
 
   getEnvironmentArray(): string[] {
@@ -76,10 +140,8 @@ export class SettingsComponent implements ContentComponent, OnInit, AfterViewIni
   }
 
   saveSettings() {
-    this.stateManagementService.setAccountId(this.selectedAccountId);
-    this.stateManagementService.setEnvironment(this.selectedEnvironment);
-    M.Toast.dismissAll();
     if (isNullOrUndefined(this.selectedAccountId)) {
+      M.Toast.dismissAll();
       M.toast(
         {
           html: 'Account Id is required',
@@ -87,14 +149,14 @@ export class SettingsComponent implements ContentComponent, OnInit, AfterViewIni
           outDuration: 0,
           classes: 'red rounded'
         });
-    } else {
-      M.toast(
-        {
-          html: 'OK!',
-          displayLength: 1000,
-          outDuration: 0,
-          classes: 'green rounded'
-        });
+    } else if (!this.isSettingsSaving) {
+      this.isSettingsSaving = true;
+      this.stateManagementService.setAccountId(this.selectedAccountId);
+      this.stateManagementService.setEnvironment(this.selectedEnvironment);
+      const erpConnectionInfo = new ConnectionInfo(this.erpUser, this.erpPassword, this.erpConnectionString)
+      const tdConnectionInfo = new ConnectionInfo(this.tdUser, this.tdPassword, this.tdConnectionString)
+      const connectionSet = new ConnectionSet(erpConnectionInfo, tdConnectionInfo);
+      this._electronService.ipcRenderer.send('write-settings-file', this.selectedEnvironment, JSON.stringify(connectionSet));
     }
   }
 }

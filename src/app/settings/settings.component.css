@@ -10,3 +10,33 @@ div > .text {
   vertical-align: middle;
 }
 
+p > label {
+  margin-right: 5em;
+}
+
+th {
+  font-weight: normal !important;
+  font-style: italic
+}
+
+tr {
+  border-bottom: unset !important;
+}
+
+.last {
+  width: 5em;
+}
+
+.loading {
+  display: show;
+  height: 2em !important;
+  vertical-align: middle;
+}
+
+.resting {
+  display: none;
+}
+
+td.test-btn {
+  width:1%;
+}

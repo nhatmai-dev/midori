@@ -1,6 +1,12 @@
 const { app, BrowserWindow, ipcMain } = require('electron')
-const path = require('path')   
-const url = require('url')  
+const path = require('path')
+const url = require('url')
+const fs = require('fs')
+const util = require('util')
+const appLocation = require('electron-root-path').rootPath
+const appName = 'midori'
+const configDirPath = `${appLocation}${path.sep}config`
+
 
 // Keep a global reference of the window object, if you don't, the window will
 // be closed automatically when the JavaScript object is garbage collected.
@@ -24,14 +30,14 @@ function createWindow () {
   }))
 
   // Create the browser window.
-  win = new BrowserWindow({ 
-    width: 1366, 
+  win = new BrowserWindow({
+    width: 1366,
     height: 768,
     minWidth: 800,
-    minHeight: 600
+    minHeight: 600,
+    icon: path.join(__dirname, 'favicon.ico'),
+    show: false
   })
-
-  win.setMenuBarVisibility(false);
 
   // and load the index.html of the app.
   win.loadURL(url.format({
@@ -39,6 +45,9 @@ function createWindow () {
     protocol: 'file:',
     slashes: true
   }))  
+
+  // hide the menu bar.
+  win.setMenuBarVisibility(false)
 
   // Open the DevTools.
   // win.webContents.openDevTools()
@@ -50,6 +59,10 @@ function createWindow () {
     // when you should delete the corresponding element.
     win = null
   })
+
+  if (!fs.existsSync(configDirPath)) {
+    fs.mkdirSync(configDirPath);
+  }
 
   win.once('ready-to-show', () => {
     setTimeout(() => {
@@ -81,20 +94,21 @@ app.on('activate', () => {
   }
 })
 
-ipcMain.on('get-node-version', (event) => {
-  event.sender.send('get-node-version-resp', process.versions['node'])
+ipcMain.on('write-settings-file', (event, environment, connectionInfo) => {
+  const settingsFilePath = `${configDirPath}${path.sep}connection_${environment}.conf`
+  fs.openSync(settingsFilePath, 'w');
+  fs.writeFileSync(settingsFilePath, connectionInfo)
+  event.sender.send('write-settings-file-resp', 'OK')
 })
 
-ipcMain.on('get-electron-version', (event) => {
-  event.sender.send('get-electron-version-resp', process.versions['electron'])
-})
-
-ipcMain.on('get-chrome-version', (event) => {
-  event.sender.send('get-chrome-version-resp', process.versions['chrome'])
-})
-
-ipcMain.on('get-v8-version', (event) => {
-  event.sender.send('get-v8-version-resp', process.versions['v8'])
+ipcMain.on('read-settings-file', (event, environment) => {
+  const settingsFilePath = `${configDirPath}${path.sep}connection_${environment}.conf`
+  if (!fs.existsSync(settingsFilePath)) {
+    event.sender.send('read-settings-file-resp', '{}')
+  } else {
+    const content = fs.readFileSync(settingsFilePath)
+    event.sender.send('read-settings-file-resp', content)
+  }
 })
 
 // In this file you can include the rest of your app's specific main process
