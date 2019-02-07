@@ -1,0 +1,45 @@
+<!doctype html>
+<html lang="en">
+
+<head>
+  <meta charset="utf-8">
+  <title>Midori</title>
+  <base href="./">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <link rel="icon" type="image/x-icon" href="favicon.ico">
+  <link href="https://fonts.googleapis.com/icon?family=Material+Icons" rel="stylesheet">
+  <style>
+    html,
+    div {
+      height: 100%;
+      width: 100%;
+    }
+
+    img {
+      bottom: 0;
+      left: 0;
+      margin: auto;
+      position: absolute;
+      right: 0;
+      top: 0;
+    }
+
+    .pulse.loading {
+      animation: pulse 0.3s ease-in infinite;
+    }
+
+    @keyframes pulse {
+      25% {
+        transform: scale(0.95);
+      }
+    }
+  </style>
+</head>
+
+<body>
+  <div class="content">
+    <img class="logo pulse loading" src="assets/images/logo.png">
+  </div>
+</body>
+
+</html>

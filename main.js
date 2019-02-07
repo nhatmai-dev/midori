@@ -5,8 +5,24 @@ const url = require('url')
 // Keep a global reference of the window object, if you don't, the window will
 // be closed automatically when the JavaScript object is garbage collected.
 let win
+let splash
 
 function createWindow () {
+  const dirpath = __dirname;
+  const dirname = dirpath.substring(dirpath.lastIndexOf("/")+1,dirpath.length);
+
+  splash = new BrowserWindow({ 
+    width: 1366, 
+    height: 768, 
+    frame: false,
+    icon: path.join(__dirname, 'favicon.ico'), 
+    alwaysOnTop: true })
+  splash.loadURL(url.format({
+    pathname: path.join(__dirname, `dist${path.sep}${dirname}${path.sep}splash.html`),
+    protocol: 'file:',
+    slashes: true
+  }))
+
   // Create the browser window.
   win = new BrowserWindow({ 
     width: 1366, 
@@ -18,12 +34,10 @@ function createWindow () {
   win.setMenuBarVisibility(false);
 
   // and load the index.html of the app.
-  const dirpath = __dirname;
-  const dirname = dirpath.substring(dirpath.lastIndexOf("/")+1,dirpath.length);
-  win.loadURL(url.format({      
-    pathname: path.join(__dirname, `dist/${dirname}/index.html`),       
-    protocol: 'file:',      
-    slashes: true     
+  win.loadURL(url.format({
+    pathname: path.join(__dirname, `dist${path.sep}${dirname}${path.sep}index.html`),
+    protocol: 'file:',
+    slashes: true
   }))  
 
   // Open the DevTools.
@@ -35,6 +49,13 @@ function createWindow () {
     // in an array if your app supports multi windows, this is the time
     // when you should delete the corresponding element.
     win = null
+  })
+
+  win.once('ready-to-show', () => {
+    setTimeout(() => {
+      splash.destroy();
+      win.show();
+    }, 1500);
   })
 }
 
