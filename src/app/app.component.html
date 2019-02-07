@@ -1,16 +1,8 @@
-<!-- <div class="app-container"> -->
-  <div class="app-container__content row">
-    <!-- <div class="left-panel col l3 deep-orange accent-4">WTF left</div> -->
-    <!-- <div class="left-panel col l9 green accent-4">WTF right</div> -->
-
-    <div class="left-panel col s1 m1 l3">
-      <app-sidebar [contentLoader]="contentLoader"></app-sidebar>
-    </div>
-    <div class="right-panel col s11 m11 l9">
-        <app-content-loader #contentLoader></app-content-loader>
-    </div>
-
-    <!-- <div class="left-panel col l3 deep-orange accent-4">WTF left</div> -->
-    <!-- <div class="left-panel col l9 green accent-4">WTF right</div> -->
+<div class="app-container__content row">
+  <div class="left-panel col s1 m1 l3">
+    <app-sidebar [contentLoader]="contentLoader"></app-sidebar>
   </div>
-<!-- </div> -->
+  <div class="right-panel col s11 offset-s1 m11 offset-m1 l9 offset-l3">
+    <app-content-loader #contentLoader></app-content-loader>
+  </div>
+</div>
