@@ -1,4 +1,5 @@
 const { app, BrowserWindow, ipcMain } = require('electron')
+const pkjson = require('./package.json')
 const path = require('path')
 const url = require('url')
 const fs = require('fs')
@@ -110,6 +111,28 @@ ipcMain.on('read-settings-file', (event, environment) => {
     event.sender.send('read-settings-file-resp', content)
   }
 })
+
+ipcMain.on('get-node-version', (event) => {
+  event.sender.send('get-node-version-resp', process.versions['node'])
+})
+
+ipcMain.on('get-electron-version', (event) => {
+  event.sender.send('get-electron-version-resp', process.versions['electron'])
+})
+
+ipcMain.on('get-chrome-version', (event) => {
+  event.sender.send('get-chrome-version-resp', process.versions['chrome'])
+})
+
+ipcMain.on('get-v8-version', (event) => {
+  event.sender.send('get-v8-version-resp', process.versions['v8'])
+})
+
+ipcMain.on('get-app-version', (event) => {
+  event.sender.send('get-app-version-resp', pkjson.version)
+})
+
+
 
 // In this file you can include the rest of your app's specific main process
 // code. You can also put them in separate files and require them here.
