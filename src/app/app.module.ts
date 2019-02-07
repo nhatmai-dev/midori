@@ -1,6 +1,7 @@
 import { BrowserModule } from '@angular/platform-browser';
 import { NgModule } from '@angular/core';
 import { FormsModule } from '@angular/forms';
+import { ElectronService } from 'ngx-electron';
 
 
 import { AppComponent } from './app.component';
@@ -29,7 +30,8 @@ import { StateManagementService } from './state-management.service';
     FormsModule
   ],
   providers: [
-    StateManagementService
+    StateManagementService,
+    ElectronService
   ],
   entryComponents: [
     SettingsComponent,
