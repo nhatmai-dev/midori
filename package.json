@@ -10,7 +10,8 @@
     "lint": "ng lint",
     "e2e": "ng e2e",
     "electron-build": "ng build && electron .",
-    "electron-view": "electron ."
+    "electron-view": "electron .",
+    "postinstall": "electron-rebuild -f -w oracledb"
   },
   "private": true,
   "dependencies": {
@@ -23,6 +24,8 @@
     "@angular/platform-browser-dynamic": "~7.1.0",
     "@angular/router": "~7.1.0",
     "core-js": "^2.5.4",
+    "electron-root-path": "^1.0.8",
+    "oracledb": "https://github.com/oracle/node-oracledb/releases/download/v3.0.1/oracledb-src-3.0.1.tgz",
     "rxjs": "~6.3.3",
     "tslib": "^1.9.0",
     "zone.js": "~0.8.26"
@@ -37,6 +40,7 @@
     "@types/node": "~8.9.4",
     "codelyzer": "~4.5.0",
     "electron": "^4.0.0",
+    "electron-rebuild": "^1.8.2",
     "jasmine-core": "~2.99.1",
     "jasmine-spec-reporter": "~4.2.1",
     "karma": "~3.1.1",
@@ -44,7 +48,9 @@
     "karma-coverage-istanbul-reporter": "~2.0.1",
     "karma-jasmine": "~1.1.2",
     "karma-jasmine-html-reporter": "^0.2.2",
-    "materialize-css": "^1.0.0-rc.2",
+    "materialize-css": "^1.0.0",
+    "nan": "^2.12.1",
+    "ngx-electron": "^2.0.0",
     "protractor": "~5.4.0",
     "ts-node": "~7.0.0",
     "tslint": "~5.11.0",
