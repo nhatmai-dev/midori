@@ -1,0 +1,11 @@
+.collection.with-header > .collection-item {
+    padding-left: 4.7rem;
+}
+
+.collection-header {
+    border-bottom: unset !important;
+}
+
+.collection-item {
+    border-bottom: unset;
+}
