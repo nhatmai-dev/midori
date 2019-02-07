@@ -16,3 +16,14 @@ a > .text {
   color: black;
   vertical-align: middle;
 }
+
+.pulse:hover{
+  animation: pulse 0.3s ease-in infinite;
+  cursor: pointer;
+}
+
+@keyframes pulse{
+  25%  {transform: scale(0.95);}
+  75%  {transform: scale(1.05);}
+}
+
