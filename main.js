@@ -1,5 +1,6 @@
 const { app, BrowserWindow, ipcMain } = require('electron')
 const pkjson = require('./package.json')
+const oracledb = require('oracledb')
 const path = require('path')
 const url = require('url')
 const fs = require('fs')
@@ -25,7 +26,7 @@ function createWindow() {
     icon: path.join(__dirname, 'favicon.ico'), 
     alwaysOnTop: true })
   splash.loadURL(url.format({
-    pathname: path.join(__dirname, `dist${path.sep}${dirname}${path.sep}splash.html`),
+    pathname: path.join(__dirname, `dist${path.sep}${appName}${path.sep}splash.html`),
     protocol: 'file:',
     slashes: true
   }))
@@ -42,7 +43,7 @@ function createWindow() {
 
   // and load the index.html of the app.
   win.loadURL(url.format({
-    pathname: path.join(__dirname, `dist${path.sep}${dirname}${path.sep}index.html`),
+    pathname: path.join(__dirname, `dist${path.sep}${appName}${path.sep}index.html`),
     protocol: 'file:',
     slashes: true
   }))  
@@ -132,7 +133,97 @@ ipcMain.on('get-app-version', (event) => {
   event.sender.send('get-app-version-resp', pkjson.version)
 })
 
+ipcMain.on('get-application-user-key', (event, connectionInfo, accountId) => {
+  let info = JSON.parse(connectionInfo)
+  const queryTemplate = fs.readFileSync(`${appLocation}${path.sep}config${path.sep}getApplicationUserKey.sql`,'utf8')
+  const query = util.format(queryTemplate, accountId)
+  console.log(`Executing ${query}`)
+  connect(
+    'get-application-user-key',
+    { user: `${info.user}`, password: `${info.password}`, connectString: `${info.connectString}` },
+    query,
+    [],
+    event,
+    function finalize(result) {
+      if (result.rows.length === 0) {
+        event.sender.send('get-application-user-key-resp', '')
+      } else {
+        event.sender.send('get-application-user-key-resp', result.rows[0][0])
+      }
+    }
+  )
+})
 
+
+ipcMain.on('test-erp-connection', (event, connectionInfo) => {
+  console.log('Receive: ', connectionInfo);
+  testConnection('test-erp-connection', event, connectionInfo)
+})
+
+ipcMain.on('test-td-connection', (event, connectionInfo) => {
+  console.log('Receive: ', connectionInfo);
+  testConnection('test-td-connection', event, connectionInfo)
+})
+
+async function testConnection(functionName, event, connectionInfo) {
+  let conn
+  let info = JSON.parse(connectionInfo)
+  try {
+    conn = await oracledb.getConnection({ user: `${info.user}`, password: `${info.password}`, connectString: `${info.connectString}` })
+    event.sender.send(functionName + '-resp', 'OK')
+  } catch(err) {
+    console.log('Error in processing:\n', err);
+    event.sender.send(functionName + '-resp', 'FAILED')
+  } finally {
+    if (conn) {
+      try {
+        await conn.close();
+      } catch(err) {
+        console.log('Error in closing connection:\n', err);
+      }
+    }
+  }
+}
+
+function connect(functionName, connectionInfo, query, params, event, callback) {
+  console.log(`functionName = ${functionName}`)
+  oracledb.getConnection(
+    connectionInfo,
+    function (err, connection) {
+      if (err) {
+        console.error(err.message)
+        return
+      }
+      connection.execute(
+        query,
+        params,  // bind value for :id
+        function (err, result) {
+          if (err) {
+            console.err(err.message)
+            event.sender.send(functionName + '-resp', 'ERROR')
+          } else {
+            console.log(result)
+            callback(result)
+          }
+          releaseConnection(connection)
+        }
+      )
+    }
+  )
+}
+
+function releaseConnection(connection) {
+  connection.close(
+    function (err) {
+      if (err)
+        console.error(err.message)
+    })
+}
+
+ipcMain.on('synchronous-message', (event, arg) => {
+  console.log(arg) // prints "ping"
+  event.returnValue = 'pong'
+})
 
 // In this file you can include the rest of your app's specific main process
 // code. You can also put them in separate files and require them here.

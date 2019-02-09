@@ -19,12 +19,35 @@ th {
   font-style: italic
 }
 
+th, td {
+  padding: 5px 5px !important;
+}
+
 tr {
   border-bottom: unset !important;
 }
 
+.p5 {
+  width: 5% !important;
+}
+
+
+.p15 {
+  width: 15% !important;
+}
+
+.p20 {
+  width: 20% !important;
+}
+.p35 {
+  width: 35% !important;
+}
+
+
 .last {
-  width: 5em;
+  width: 5% !important;
+  min-width: 28px !important;
+  padding-right: 0px !important;
 }
 
 .loading {

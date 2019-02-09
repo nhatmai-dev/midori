@@ -39,11 +39,11 @@
   <table class="highlight">
     <thead>
       <tr>
-        <th>Schema</th>
-        <th>Connection string</th>
-        <th>Username</th>
-        <th>Password</th>
-        <th></th>
+        <th class="p15">Schema</th>
+        <th class="p35">Connection string</th>
+        <th class="p20">Username</th>
+        <th class="p20">Password</th>
+        <th class="p5"></th>
         <th class="last"></th>
       </tr>
     </thead>
@@ -53,16 +53,16 @@
         <td><input type="text" class="validate" [(ngModel)]="erpConnectionString" required ></td>
         <td><input type="text" class="validate" [(ngModel)]="erpUser" required ></td>
         <td><input type="password" class="validate" [(ngModel)]="erpPassword" required ></td>
-        <td class="test-btn"><a class="waves-effect waves-light btn">Test</a></td>
-        <td class="last"><img src="assets/images/ball.gif" alt="" class="responsive-img loading"></td>
+        <td class="test-btn"><a class="waves-effect waves-light btn" (click)="testErpConnection()">Test</a></td>
+        <td><img src="assets/images/ball.gif" alt="" [ngClass]="{'loading': isTestingErpConnection, 'resting': !isTestingErpConnection}" class="responsive-img"></td>
       </tr>
       <tr>
         <td>TD_ACCESS</td>
         <td><input type="text" class="validate" [(ngModel)]="tdConnectionString" required ></td>
         <td><input type="text" class="validate" [(ngModel)]="tdUser" required ></td>
         <td><input type="password" class="validate" [(ngModel)]="tdPassword" required ></td>
-        <td class="test-btn"><a class="waves-effect waves-light btn">Test</a></td>
-        <td class="last"><img src="assets/images/ball.gif" alt="" class="responsive-img loading"></td>
+        <td class="test-btn"><a class="waves-effect waves-light btn" (click)="testTdConnection()">Test</a></td>
+        <td><img src="assets/images/ball.gif" alt="" [ngClass]="{'loading': isTestingTdConnection, 'resting': !isTestingTdConnection}" class="responsive-img"></td>
       </tr>
     </tbody>
   </table>

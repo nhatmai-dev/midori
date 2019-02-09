@@ -9,9 +9,10 @@
     "test": "ng test",
     "lint": "ng lint",
     "e2e": "ng e2e",
+    "postinstall": "electron-rebuild -f -w oracledb",
     "electron-build": "ng build && electron .",
     "electron-view": "electron .",
-    "postinstall": "electron-rebuild -f -w oracledb"
+    "package-win": "electron-packager . Midori --overwrite --asar --platform=win32 --arch=x64 --prune=true --out=release-builds"
   },
   "private": true,
   "dependencies": {
@@ -24,7 +25,7 @@
     "@angular/platform-browser-dynamic": "~7.1.0",
     "@angular/router": "~7.1.0",
     "core-js": "^2.5.4",
-    "electron-root-path": "^1.0.8",
+    "electron-root-path": "^1.0.9",
     "oracledb": "https://github.com/oracle/node-oracledb/releases/download/v3.0.1/oracledb-src-3.0.1.tgz",
     "rxjs": "~6.3.3",
     "tslib": "^1.9.0",
@@ -40,6 +41,7 @@
     "@types/node": "~8.9.4",
     "codelyzer": "~4.5.0",
     "electron": "^4.0.0",
+    "electron-packager": "^13.0.1",
     "electron-rebuild": "^1.8.2",
     "jasmine-core": "~2.99.1",
     "jasmine-spec-reporter": "~4.2.1",
