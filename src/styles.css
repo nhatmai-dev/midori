@@ -14,6 +14,20 @@ body {
   text-align: center !important;
 }
 
+input.valid[type=number]:not(.browser-default),
+input.valid[type=text]:not(.browser-default),
+input.valid[type=password]:not(.browser-default) {
+  border-bottom: 1px solid #009688 !important;
+  box-shadow: 0 1px 0 0 #009688 !important;
+}
+
+input.invalid[type=number]:not(.browser-default),
+input.invalid[type=text]:not(.browser-default),
+input.invalid[type=password]:not(.browser-default) {
+  border-bottom: 1px solid #e53935 !important;
+  box-shadow: 0 1px 0 0 #e53935 !important;
+}
+
 ::-webkit-scrollbar {
   width: 0.5em;
 }
